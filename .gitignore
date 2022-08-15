@@ -1,3 +1,5 @@
 venv/
 *.csv
 *.html
+
+__pycache__/
