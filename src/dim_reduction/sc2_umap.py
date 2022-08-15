@@ -1,7 +1,9 @@
 #%%
 
+import imp
 import os
 from pathlib import Path
+from re import I
 import sys
 import umap
 import umap.plot
@@ -10,13 +12,12 @@ import pandas as pd
 from IPython.display import display
 from sklearn.preprocessing import StandardScaler
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
+from src.dim_reduction.utils.groupby_util import groupby_fields_mean
 
-from src.experiments.dim_reduction.groupby_util import groupby_fields_mean
 
 #%%
 
-csv_path = Path("FIXED_sc2egset_csv.csv").resolve().as_posix()
+csv_path = Path("../FIXED_sc2egset_csv.csv").resolve().as_posix()
 print(csv_path)
 #%%
 loaded_data = pd.read_csv(csv_path)
