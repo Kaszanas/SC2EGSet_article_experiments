@@ -3,3 +3,7 @@ venv/
 *.html
 
 __pycache__/
+
+*.pdf
+
+.ipynb_checkpoints/
