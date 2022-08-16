@@ -1,6 +1,5 @@
 from typing import Dict, List
 import pandas as pd
-from IPython.display import display
 
 
 def groupby_fields_mean(
