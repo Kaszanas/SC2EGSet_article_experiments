@@ -14,6 +14,7 @@ matplotlib = "^3.5.3"
 xgboost = "^1.6.1"
 ipython = "^8.4.0"
 ipykernel = "^6.15.1"
+jupyter = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
