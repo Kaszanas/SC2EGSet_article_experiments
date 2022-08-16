@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "sc2egset_article_experiments"
+version = "0.8.0"
+description = "Experiments for the SC2EGSetDataset article publication."
+authors = ["Andrzej Białecki", "Paweł Dobrowolski","Andrzej Szczap"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+umap-learn = "^0.5.3"
+pandas = "^1.4.3"
+matplotlib = "^3.5.3"
+xgboost = "^1.6.1"
+ipython = "^8.4.0"
+
+[tool.poetry.dev-dependencies]
+black = "^22.6.0"
