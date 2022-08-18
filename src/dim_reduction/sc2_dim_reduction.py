@@ -25,10 +25,7 @@ from utils.groupby_util import groupby_fields_mean
 csv_path = Path("../sc2egset.csv").resolve().as_posix()
 loaded_data = pd.read_csv(csv_path)
 
-#%%
-
 # Suggested fields might include: "map_name", "player_name"
-
 unique_games = loaded_data["game_hash"].nunique()
 groupby_fields = ["outcome", "race"]
 drop_fields = ["game_time_gameloop", "gameloop"]
@@ -49,10 +46,13 @@ dim_reduction_models = {
 
 dim_red_solved = {}
 for model_name, model in dim_reduction_models.items():
-
     for grouped_field, result_df in grouped_dataframes.items():
 
-        grouped_dict = {"model_name": model_name}
+        grouped_dict = {
+            "grouped_field": grouped_field,
+            "model_name": model_name,
+            "result_df": result_df,
+        }
 
         standardized_data, unique_map_display = prep_for_dim_reduction(
             grouped_field=grouped_field, result_df=result_df
@@ -67,27 +67,22 @@ for model_name, model in dim_reduction_models.items():
         grouped_dict["model"] = reducer
         dim_red_solved[f"{model_name}_{grouped_field}"] = grouped_dict
 
-
-# %%
-
-
-for key, obj in dim_red_solved.items():
-
-    if obj["model_name"] == "UMAP":
-
-        # umap.plot.output_file(filename=f"{grouped_field}_interactive_bokeh_plot.html")
-        # interactive_plot = umap.plot.interactive(
-        #     reducer,
-        #     labels=result_df[grouped_field].map(unique_map_display),
-        #     color_key_cmap="Paired",
-        #     background="black",
-        # )
-        static_plot = umap.plot.points(
-            reducer,
-            labels=result_df[grouped_field].map(unique_map_display),
-            color_key_cmap="Paired",
-            background="black",
-        )
-        umap.plot.show(static_plot)
-        umap.plot.output_file(filename=f"{model_name}_{grouped_field}_static_plot.html")
-        # umap.plot.show(interactive_plot)
+        if model_name == "UMAP":
+            # umap.plot.output_file(filename=f"{grouped_field}_interactive_bokeh_plot.html")
+            # interactive_plot = umap.plot.interactive(
+            #     reducer,
+            #     labels=result_df[grouped_field].map(unique_map_display),
+            #     color_key_cmap="Paired",
+            #     background="black",
+            # )
+            static_plot = umap.plot.points(
+                reducer,
+                labels=result_df[grouped_field].map(unique_map_display),
+                color_key_cmap="Paired",
+                background="black",
+            )
+            umap.plot.show(static_plot)
+            umap.plot.output_file(
+                filename=f"{model_name}_{grouped_field}_static_plot.html"
+            )
+            # umap.plot.show(interactive_plot)
