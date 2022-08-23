@@ -23,7 +23,7 @@ y = df.loc[:, ['race']].values
 # Standardizing the features
 x = StandardScaler().fit_transform(x)
 
-pca = PCA(n_components=2)
+pca = PCA(n_components=2, random_state=42)
 components = pca.fit_transform(x)
 
 fig = px.scatter(
