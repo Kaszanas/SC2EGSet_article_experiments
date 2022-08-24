@@ -5,31 +5,38 @@ import plotly.express as px
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-from src.dim_reduction.utils.replacement import Replacement
-
+# read csv file
 csv_path = Path("../sc2egset.csv").resolve().as_posix()
 df = pd.read_csv(csv_path)
 
-Replacement.race_name_into_number_value(df)
-Replacement.outcome_into_number_value(df)
-Replacement.map_into_number_value(df)
-Replacement.player_name_into_number_value(df)
-Replacement.player_toon_into_number_value(df)
-
-features = df.columns
-x = df.loc[:, features].values
-# Separating out the target
-y = df.loc[:, ['race']].values
-# Standardizing the features
+# all csv columns, with excluded: 'map_name', 'player_name', 'player_toon', 'race', 'outcome'
+x = df.loc[:, ~df.columns.isin(['map_name', 'player_name', 'player_toon', 'race', 'outcome'])]
+# standardizing the features
 x = StandardScaler().fit_transform(x)
 
-pca = PCA(n_components=2, random_state=42)
+# changing csv incomplete race name to correct in game races names
+df['race'].replace({"Terr": "Terran", "Prot": "Protoss"}, inplace=True)
+
+# pca
+# n_components = 5 cuz my pc is terrible
+n_components = 5
+pca = PCA(n_components=n_components, random_state=42)
 components = pca.fit_transform(x)
 
-fig = px.scatter(
+# total explained variance of the data, percentage value, more n_components = better
+total_var = pca.explained_variance_ratio_.sum() * 100
+
+# labels, and title of the legend in the plot
+labels = {str(i): f"PC {i + 1}" for i in range(n_components)}
+labels['color'] = "StarCraft 2 races"
+
+# plot
+fig = px.scatter_matrix(
     components,
-    x=0,
-    y=1,
-    color=df['race']
+    color=df['race'],
+    dimensions=range(n_components),
+    labels=labels,
+    title=f'Total Explained Variance: {total_var:.2f}%',
 )
+fig.update_traces(diagonal_visible=False)
 fig.show()
